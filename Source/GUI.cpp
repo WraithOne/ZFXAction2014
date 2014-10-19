@@ -98,6 +98,62 @@ void  Capp::RenderGUI(unsigned int elapsedTime)
 		SDL_RenderCopy(m_Renderer, m_Goods, &m_WiskySrcRect, &m_WiskyDstRect);
 		InttoText(m_Renderer, m_Font, m_WiskyPosition, m_Wisky, 255, 0, 0);
 
+		// Prisoner
+		std::vector<Prisoner>::iterator p_it;
+		for (p_it = m_PrisonerList.begin(); p_it < m_PrisonerList.end(); p_it++)
+		{
+			if (p_it->BuyGoods != Nothing)
+			{
+				// Speech buubles
+				SDL_Rect srcRect = { 50, 0, 50, 40 };
+				SDL_Rect dstRect = { p_it->BBrect.x, p_it->BBrect.y - 40, 50, 40 };
+				SDL_RenderCopy(m_Renderer, m_Speechbubbles, &srcRect, &dstRect);
+
+				// Goods
+				srcRect = { 0, 0, 16, 16 };
+				if (p_it->BuyGoods == Cigaretts)
+					srcRect.x = 16;
+				if (p_it->BuyGoods == Weed)
+					srcRect.x = 32;
+				if (p_it->BuyGoods == Cocaine)
+					srcRect.x = 48;
+				if (p_it->BuyGoods == Vodka)
+					srcRect.x = 64;
+				if (p_it->BuyGoods == Wisky)
+					srcRect.x = 80;
+				dstRect = { p_it->BBrect.x + 14, p_it->BBrect.y - 28, 16, 16 };
+				SDL_RenderCopy(m_Renderer, m_Goods, &srcRect, &dstRect);
+			}
+		}
+
+		// Smuggler
+		std::vector<Smuggler>::iterator it;
+		for (it = m_SmugglerList.begin(); it < m_SmugglerList.end(); it++)
+		{
+			if (it->sellGoods != Nothing)
+			{
+				// Speech buubles
+				SDL_Rect srcRect = { 50, 0, 50, 40 };
+				SDL_Rect dstRect = { it->dstRect.x, it->dstRect.y - 40, 50, 40 };
+				SDL_RenderCopy(m_Renderer, m_Speechbubbles, &srcRect, &dstRect);
+
+				// Goods
+				srcRect = { 0, 0, 16, 16 };
+				if (it->sellGoods == Cigaretts)
+					srcRect.x = 16;
+				if (it->sellGoods == Weed)
+					srcRect.x = 32;
+				if (it->sellGoods == Cocaine)
+					srcRect.x = 48;
+				if (it->sellGoods == Vodka)
+					srcRect.x = 64;
+				if (it->sellGoods == Wisky)
+					srcRect.x = 80;
+				dstRect = { it->dstRect.x + 14, it->dstRect.y - 28, 16, 16 };
+				SDL_RenderCopy(m_Renderer, m_Goods, &srcRect, &dstRect);
+			}
+		}
+
 	}
 
 }
