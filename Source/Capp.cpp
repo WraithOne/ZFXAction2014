@@ -17,6 +17,7 @@ Capp::Capp()
 	m_Renderer =		nullptr;
 
 	m_Prison =			nullptr;
+	m_PrisonBB =		nullptr;
 	m_Menu =			nullptr;
 	m_Lost =			nullptr;
 	m_Goods =			nullptr;
@@ -37,7 +38,6 @@ Capp::~Capp()
 
 bool Capp::Init()
 {
-#pragma region systems
 	// Create Window
 	m_Window = SDL_CreateWindow("ZFX Action V Theme: Career, Cell", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
 	if (m_Window == nullptr)
@@ -86,41 +86,6 @@ bool Capp::Init()
 
 		return false;
 	}
-#pragma endregion
-
-#pragma region LoadFiles
-	// Load Prison Image
-	m_Prison = LoadImage(m_Renderer, "Data/GFX/Prison.png");
-	if (m_Prison == nullptr)
-		return false;
-	// Load Menu Image
-	m_Menu = LoadImage(m_Renderer, "Data/GFX/Menu.png");
-	if (m_Menu == nullptr)
-		return false;
-	// Load Lost Image
-	m_Lost = LoadImage(m_Renderer, "Data/GFX/Lost.png");
-	if (m_Lost == nullptr)
-		return false;
-	// Load Goods Image
-	m_Goods = LoadImage(m_Renderer, "Data/GFX/Goods.png");
-	if (m_Goods == nullptr)
-		return false;
-	// Load Speechbubbles Image
-	m_Speechbubbles = LoadImage(m_Renderer, "Data/GFX/Speechbubbles.png");
-	if (m_Speechbubbles == nullptr)
-		return false;
-	// Load Player Image
-	m_Player = LoadImage(m_Renderer, "Data/GFX/Player.png");
-	if (m_Player == nullptr)
-		return false;
-	// Load Prisoner Image
-	m_Prisoner = LoadImage(m_Renderer, "Data/GFX/Prisoner.png");
-	if (m_Prisoner == nullptr)
-		return false;
-	// Load Guard Image
-	m_Guard = LoadImage(m_Renderer, "Data/GFX/Guard.png");
-	if (m_Guard == nullptr)
-		return false;
 
 	// Load Font
 	m_Font = TTF_OpenFont("Data/Fonts/ace_futurism.ttf", 16);
@@ -131,40 +96,30 @@ bool Capp::Init()
 
 		return false;
 	}
-#pragma endregion
 
-#pragma region MenuRects
-	m_TitelSrcRect =			FillRect(0, 0, 584, 67);
-	m_TitelDstRect =			FillRect(112, 18, 584, 67);
+	// Init Menu
+	if (!InitMenu())
+		return false;
 
-	m_LoseSrcRect =				FillRect(0, 286, 335, 67);
-	m_LoseDstRect =				FillRect(236, 23 , 335 , 67);
+	// Init Game
+	if (!InitGame())
+		return false;
 
-	m_StartSrcRect =			FillRect(0, 67, 146, 53);
-	m_StartSelectedSrcRect =	FillRect(146, 67, 146, 53);
-	m_StartDstRect =			FillRect(330, 175, 146, 53);
+	// Init Player
+	if (!InitPlayer())
+		return false;
 
-	m_ContinueSrcRect =			FillRect(0, 120, 238, 53);
-	m_ContinueSelectedSrcRect = FillRect(238, 120, 238, 53);
-	m_ContinueDstRect =			FillRect(281, 149, 238, 53);
+	// Init Guard
+	if (!InitGuard())
+		return false;
 
-	m_TryAgainSrcRect =			FillRect(0, 226, 264, 60);
-	m_TryAgainSelectedSrcRect =	FillRect(264, 226, 264, 60);
-	m_TryAgainDstRect =			FillRect(286, 145, 264, 60);
+	// Init Prisoner
+	if (!InitPrisoner())
+		return false;
 
-	m_ExitSrcRect =				FillRect(0, 173, 110, 53);
-	m_ExitSelectedSrcRect =		FillRect(110, 173, 110, 53);
-	m_ExitDstRect =				FillRect(344, 303, 110, 53);
-#pragma endregion
-
-#pragma region keys
-	m_UPpressed =				false;
-	m_DOWNpressed =				false;
-	m_LEFTpressed =				false;
-	m_RIGHTpressed =			false;
-	m_Bpressed =				false;
-	m_Spressed =				false;
-#pragma endregion
+	// Init GUI
+	if (!InitGUI())
+		return false;
 
 	return true;
 }
@@ -172,7 +127,7 @@ bool Capp::Init()
 int Capp::Run()
 {
 	m_isRunning = true;
-	unsigned int lastTime = SDL_GetTicks();
+	m_lastTime = m_AnimationlastTime = SDL_GetTicks();
 
 	// Game Loop
 	while (m_isRunning)
@@ -184,13 +139,11 @@ int Capp::Run()
 				m_isRunning = false;
 			}
 		}
-		unsigned int elapsedTime = SDL_GetTicks() - lastTime;
+		unsigned int elapsedTime = SDL_GetTicks();
 
 		Input();
 		Update(elapsedTime);
 		Render(elapsedTime);
-
-		lastTime = elapsedTime;
 	}
 	// Shutdown
 	Shutdown();
@@ -214,12 +167,12 @@ void Capp::Update(unsigned int elapsedTime)
 {
 	if (m_Gamestate == Menu || m_Gamestate == Paused || m_Gamestate == Lost)
 	{
-		UpdateMenu();
+		UpdateMenu(elapsedTime);
 	}
 
 	if (m_Gamestate == Game)
 	{
-		UpdateGame();
+		UpdateGame(elapsedTime);
 	}
 }
 void Capp::Render(unsigned int elapsedTime)
@@ -229,10 +182,10 @@ void Capp::Render(unsigned int elapsedTime)
 	SDL_RenderClear(m_Renderer);
 
 	// Render Game
-	RenderGame();
+	RenderGame(elapsedTime);
 
 	// Render Menu
-	RenderMenu();
+	RenderMenu(elapsedTime);
 
 	// Present
 	SDL_RenderPresent(m_Renderer);
@@ -241,6 +194,7 @@ void Capp::Render(unsigned int elapsedTime)
 void Capp::Shutdown()
 {
 	SDL_DestroyTexture(m_Prison);
+	SDL_FreeSurface(m_PrisonBB);
 	SDL_DestroyTexture(m_Menu);
 	SDL_DestroyTexture(m_Lost);
 	SDL_DestroyTexture(m_Goods);

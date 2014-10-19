@@ -10,6 +10,51 @@
 ////////////////////////////////////////////
 #include <Capp.h>
 
+bool Capp::InitMenu()
+{
+	// Load Menu Image
+	m_Menu = LoadImage(m_Renderer, "Data/GFX/Menu.png");
+	if (m_Menu == nullptr)
+	{
+		Shutdown();
+
+		return false;
+	}
+		
+	// Load Lost Image
+	m_Lost = LoadImage(m_Renderer, "Data/GFX/Lost.png");
+	if (m_Lost == nullptr)
+	{
+		Shutdown();
+
+		return false;
+	}
+
+	m_TitelSrcRect = FillRect(0, 0, 584, 67);
+	m_TitelDstRect = FillRect(112, 18, 584, 67);
+
+	m_LoseSrcRect = FillRect(0, 286, 335, 67);
+	m_LoseDstRect = FillRect(236, 23, 335, 67);
+
+	m_StartSrcRect = FillRect(0, 67, 146, 53);
+	m_StartSelectedSrcRect = FillRect(146, 67, 146, 53);
+	m_StartDstRect = FillRect(330, 175, 146, 53);
+
+	m_ContinueSrcRect = FillRect(0, 120, 238, 53);
+	m_ContinueSelectedSrcRect = FillRect(238, 120, 238, 53);
+	m_ContinueDstRect = FillRect(281, 149, 238, 53);
+
+	m_TryAgainSrcRect = FillRect(0, 226, 264, 60);
+	m_TryAgainSelectedSrcRect = FillRect(264, 226, 264, 60);
+	m_TryAgainDstRect = FillRect(286, 145, 264, 60);
+
+	m_ExitSrcRect = FillRect(0, 173, 110, 53);
+	m_ExitSelectedSrcRect = FillRect(110, 173, 110, 53);
+	m_ExitDstRect = FillRect(344, 303, 110, 53);
+
+	return true;
+}
+
 void Capp::InputMenu()
 {
 	if (m_Event.type == SDL_KEYDOWN)
@@ -38,7 +83,7 @@ void Capp::InputMenu()
 			if (m_Menustate == Start)
 				if (m_Gamestate == Menu)
 				{
-					m_Gamestate = Game; // Start
+					StartGame();
 				}
 				else if (m_Gamestate == Paused)
 				{
@@ -46,7 +91,7 @@ void Capp::InputMenu()
 				}
 				else if (m_Gamestate == Lost)
 				{
-					m_Gamestate = Game; // restart
+					StartGame();
 				}
 			if (m_Menustate == Exit)
 				m_isRunning = false;
@@ -71,12 +116,12 @@ void Capp::InputMenu()
 	}
 }
 
-void Capp::UpdateMenu()
+void Capp::UpdateMenu(unsigned int elapsedTime)
 {
 	// Nothing to do here ...
 }
 
-void Capp::RenderMenu()
+void Capp::RenderMenu(unsigned int elapsedTime)
 {
 	if (m_Gamestate == Menu)
 	{
