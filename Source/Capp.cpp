@@ -109,6 +109,10 @@ bool Capp::Init()
 	if (!InitPlayer())
 		return false;
 
+	// Init Smuggler
+	if (!InitSmuggler())
+		return false;
+
 	// Init Guard
 	if (!InitGuard())
 		return false;

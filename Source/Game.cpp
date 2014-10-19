@@ -79,6 +79,7 @@ void Capp::InputGame()
 
 void Capp::UpdateGame(unsigned int elapsedTime)
 {
+	UpdateSmuggler(elapsedTime);
 	UpdateGuard(elapsedTime);
 	UpdatePrisoner(elapsedTime);
 	UpdatePlayer(elapsedTime);
@@ -88,6 +89,9 @@ void Capp::RenderGame(unsigned int elapsedTime)
 {
 	// Prison Background
 	SDL_RenderCopy(m_Renderer, m_Prison, NULL, NULL);
+
+	// Smuggler
+	RenderSmuggler(elapsedTime);
 
 	// Prisoner
 	RenderPrisoner(elapsedTime);

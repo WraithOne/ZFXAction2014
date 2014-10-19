@@ -14,6 +14,7 @@
 // std
 #include <iostream>
 #include <string>
+#include <vector>
 
 // SDL2
 #include <SDL.h>
@@ -36,6 +37,47 @@ enum Menustate
 {
 	Start,
 	Exit
+};
+
+enum Goods
+{
+	Nothing,
+	Cigaretts,
+	Weed,
+	Cocaine,
+	Vodka,
+	Wisky
+};
+
+enum Prisonerbehave
+{
+	Standing,
+	WalkingVertical,
+	WalkingHorizontal,
+	Buying
+};
+
+struct Prisoner
+{
+	SDL_Rect		BBrect;
+	SDL_Rect		srcRect;
+	Prisonerbehave	Behave;
+
+	Goods			BuyGoods;
+	SDL_Point		Buyposition;
+	float			Buyrotation;
+
+	unsigned int	lastDecisiontime;
+	SDL_Point		Walkposition;
+	float			walkrotation;
+};
+struct Smuggler
+{
+	SDL_Rect		dstRect;
+	SDL_Rect		srcRect;
+	float			rotation;
+	Goods			sellGoods;
+	unsigned int	lastDesisiontime;
 };
 
 class Capp
@@ -71,6 +113,11 @@ public:
 	void UpdatePlayer(unsigned int elapsedTime);
 	void RenderPlayer(unsigned int elapsedTime);
 
+	// Smuggler
+	bool InitSmuggler();
+	void UpdateSmuggler(unsigned int elapsedTime);
+	void RenderSmuggler(unsigned int elapsedTime);
+
 	// Prisoner
 	bool InitPrisoner();
 	void UpdatePrisoner(unsigned int elapsedTime);
@@ -99,6 +146,7 @@ private:
 	SDL_Texture*	m_Goods;// Goods Texture
 	SDL_Texture*	m_Speechbubbles;// Speechbubbles Texture
 	SDL_Texture*	m_Player;// Player Texture
+	SDL_Texture*	m_Smuggler;// Smuggler Texture
 	SDL_Texture*	m_Prisoner;// Prisoner Texture
 	SDL_Texture*	m_Guard;// Guard Texture
 
@@ -152,6 +200,12 @@ private:
 	int				m_Cocaine;
 	int				m_Vodka;
 	int				m_Wisky;
+
+	// Prisoner Stats
+	std::vector<Prisoner> m_PrisonerList;
+
+	// Smuggler Stats
+	std::vector<Smuggler> m_SmugglerList;
 
 	// Gui positions
 	SDL_Rect		m_LiveSrcRect;
