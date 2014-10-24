@@ -22,6 +22,8 @@ Capp::Capp()
 	m_Lost =			nullptr;
 	m_Goods =			nullptr;
 	m_Speechbubbles =	nullptr;
+	m_BuyArea =			nullptr;
+	m_SellArea =		nullptr;
 	m_Player =			nullptr;
 	m_Prisoner =		nullptr;
 	m_Guard =			nullptr;
@@ -203,6 +205,8 @@ void Capp::Shutdown()
 	SDL_DestroyTexture(m_Lost);
 	SDL_DestroyTexture(m_Goods);
 	SDL_DestroyTexture(m_Speechbubbles);
+	SDL_DestroyTexture(m_BuyArea);
+	SDL_DestroyTexture(m_SellArea);
 	SDL_DestroyTexture(m_Player);
 	SDL_DestroyTexture(m_Prisoner);
 	SDL_DestroyTexture(m_Guard);

@@ -28,7 +28,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 61, 30 };
+	temp.BuyArea = { 101, 2, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Cigaretts;
 	temp.Walkposition = { 62, 65 };
@@ -40,7 +42,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 61, 133 };
+	temp.BuyArea = { 101, 102, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 72, 127 };
@@ -52,7 +56,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
-	temp.Buyposition = { 64, 231 };
+	temp.vertical = true;
+	temp.Buyposition = {64, 231};
+	temp.BuyArea = {101, 202, 45, 96};
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -64,7 +70,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 65, 334 };
+	temp.BuyArea = { 101, 302, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Cigaretts;
 	temp.Walkposition = { 62, 65 };
@@ -76,7 +84,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 65, 431 };
+	temp.BuyArea = { 101, 402, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -88,7 +98,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 65, 534 };
+	temp.BuyArea = { 101, 502, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -100,7 +112,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 256, 32 };
+	temp.BuyArea = { 203, 2, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -112,7 +126,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = true;
 	temp.Buyposition = { 254, 137 };
+	temp.BuyArea = { 203, 102, 45, 96 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Cigaretts;
 	temp.Walkposition = { 62, 65 };
@@ -124,7 +140,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = {384, 265 };
+	temp.BuyArea = { 351, 301, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -136,7 +154,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = { 483, 265 };
+	temp.BuyArea = { 451, 301, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Cigaretts;
 	temp.Walkposition = { 62, 65 };
@@ -148,7 +168,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = { 283, 451 };
+	temp.BuyArea = { 251, 402, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -160,7 +182,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = { 385, 452 };
+	temp.BuyArea = { 351, 402, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -172,7 +196,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = { 481, 455 };
+	temp.BuyArea = { 451, 402, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -184,7 +210,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = { 582, 453 };
+	temp.BuyArea = { 551, 402, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Nothing;
 	temp.Walkposition = { 62, 65 };
@@ -196,7 +224,9 @@ bool Capp::InitPrisoner()
 	temp.srcRect = { 0, 0, 32, 32 };
 	temp.Behave = Standing;
 	temp.lastDecisiontime = 0;
+	temp.vertical = false;
 	temp.Buyposition = { 679, 453 };
+	temp.BuyArea = { 651, 402, 96, 45 };
 	temp.Buyrotation = 90;
 	temp.BuyGoods = Cigaretts;
 	temp.Walkposition = { 62, 65 };
