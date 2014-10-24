@@ -26,25 +26,28 @@ bool Capp::InitSmuggler()
 
 	// Smuggler 1
 	temp.dstRect =			{621, 38, 32, 32};
+	temp.sellRect =			{590, 12, 90, 90};
 	temp.srcRect =			{0, 0, 32, 32};
-	temp.rotation =			0;
-	temp.lastDesisiontime =	90;
+	temp.rotation =			90;
+	temp.lastDesisiontime =	0;
 	temp.sellGoods =		Cigaretts;
 	m_SmugglerList.push_back(temp);
 
 	// Smuggler 2
 	temp.dstRect =			{595, 140, 32, 32};
+	temp.sellRect =			{567, 113, 90, 90};
 	temp.srcRect =			{0, 0, 32, 32};
 	temp.rotation =			0;
-	temp.lastDesisiontime =	0;
+	temp.lastDesisiontime =	4000;
 	temp.sellGoods =		Nothing;
 	m_SmugglerList.push_back(temp);
 
 	// Smuggler 3
 	temp.dstRect =			{724, 127, 32, 32};
+	temp.sellRect =			{697,97,90,90};
 	temp.srcRect =			{0, 0, 32, 32};
 	temp.rotation =			0;
-	temp.lastDesisiontime =	0;
+	temp.lastDesisiontime =	8000;
 	temp.sellGoods =		Cocaine;
 	m_SmugglerList.push_back(temp);
 
@@ -55,18 +58,21 @@ bool Capp::InitSmuggler()
 void Capp::UpdateSmuggler(unsigned int elapsedTime)
 {
 	std::vector<Smuggler>::iterator it;
+	unsigned int time  =  0;
+
 	for (it = m_SmugglerList.begin(); it < m_SmugglerList.end(); it++)
 	{
-		unsigned int time;
-		if (it->lastDesisiontime < elapsedTime)
+		if (it->lastDesisiontime == 0)
 		{
-			time = 0;
+			it->lastDesisiontime = elapsedTime;
 		}
 		else
 		{
-			time = it->lastDesisiontime - elapsedTime;
+			time = elapsedTime - it->lastDesisiontime;
 		}
-		if (time >= 30000)
+		
+
+ 		if (time >= 10000)
 		{
 			int randnr;
 
@@ -76,7 +82,7 @@ void Capp::UpdateSmuggler(unsigned int elapsedTime)
 			if (randnr == 1)
 				it->sellGoods = Cigaretts;
 			if (randnr == 2)
-				it->sellGoods = Weed;
+				it->sellGoods = Marihuana;
 			if (randnr == 3)
 				it->sellGoods = Cocaine;
 			if (randnr == 4)
