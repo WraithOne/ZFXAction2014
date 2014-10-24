@@ -101,7 +101,7 @@ void InttoText(SDL_Renderer* renderer, TTF_Font* font, SDL_Point position, int n
 
 }
 
-bool RectIntersects(SDL_Surface* surface, SDL_Rect rect, SDL_Color color)
+bool ColorIntersects(SDL_Surface* surface, SDL_Rect rect, SDL_Color color)
 {
 	// Convert to 32bit
 	Uint32* pixels = (Uint32*)surface->pixels;
@@ -135,4 +135,25 @@ SDL_Color translate_color(Uint32 int_color)
 						0 };
 #endif
 	return color;
+}
+
+bool  RectIntersects(SDL_Rect first, SDL_Rect second)
+{
+	// X Axis
+	if (first.x >= second.x && first.x <= (second.x + second.w) || (first.x + first.w) >= second.x && (first.x + first.w) <= (second.x + second.w))
+	{
+		// Y Axis
+		if (first.y >= second.y && first.y <= (second.y + second.h) || (first.y + first.h) >= second.y && (first.y + first.h) <= (second.y + second.h))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
 }

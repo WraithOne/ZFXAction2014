@@ -48,7 +48,7 @@ void Capp::StartGame()
 	m_Playerrotation = 90;
 
 	m_Live = 3;
-	m_Money = 10;
+	m_Money = 10000;
 	m_Cigaretts = 0;
 	m_Mariuhana = 0;
 	m_Cocaine = 0;
@@ -90,6 +90,9 @@ void Capp::RenderGame(unsigned int elapsedTime)
 	// Prison Background
 	SDL_RenderCopy(m_Renderer, m_Prison, NULL, NULL);
 
+	// GuiRects
+	if (m_Gamestate == Game)
+		RenderGUIrects();
 	// Smuggler
 	RenderSmuggler(elapsedTime);
 
@@ -103,6 +106,7 @@ void Capp::RenderGame(unsigned int elapsedTime)
 	RenderPlayer(elapsedTime);
 
 	// Gui
-	RenderGUI(elapsedTime);
+	if (m_Gamestate == Game)
+		RenderGUI(elapsedTime);
 
 }
