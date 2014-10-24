@@ -21,18 +21,18 @@ bool Capp::InitPlayer()
 
 		return false;
 	}
+	m_PlayersrcRect =	{0, 0, 32, 32};
+	m_PlayerBBox =		{277, 234, 32, 32};
+	m_Playermoves =		false;
+	m_Playerrotation =	0;
 
-	m_PlayerBBox = { 277, 234, 32, 32 };
-	m_Playermoves = false;
-	m_Playerrotation = 0;
-
-	m_Live =		3;
-	m_Money =		10;
-	m_Cigaretts =	0;
-	m_Mariuhana =	0;
-	m_Cocaine =		0;
-	m_Vodka =		0;
-	m_Wisky =		0;
+	m_Live =			3;
+	m_Money =			10;
+	m_Cigaretts =		0;
+	m_Mariuhana =		0;
+	m_Cocaine =			0;
+	m_Vodka =			0;
+	m_Wisky =			0;
 
 	return true;
 }
@@ -65,11 +65,23 @@ void Capp::InputPlayer()
 	}
 	if (KeyboradStat[SDL_SCANCODE_B])
 	{
-		m_Bpressed = true;
+		if (m_Bpressed == false)
+		{
+			if (Buy())
+			{
+				m_Bpressed = true;
+			}
+		}	
 	}
 	if (KeyboradStat[SDL_SCANCODE_S])
 	{
-		m_Spressed = true;
+		if (m_Spressed == false)
+		{
+			if (Sell())
+			{
+				m_Spressed = true;
+			}
+		}	
 	}
 
 	////////////////////////////////////////////////////
@@ -90,8 +102,139 @@ void Capp::InputPlayer()
 	{
 		m_RIGHTpressed = false;
 	}
+	if (!KeyboradStat[SDL_SCANCODE_B])
+	{
+		m_Bpressed = false;
+	}
+	if (!KeyboradStat[SDL_SCANCODE_S])
+	{
+		m_Spressed = false;
+	}
 }
 
+bool Capp::Buy()
+{
+	std::vector<Smuggler>::iterator it;
+	for (it = m_SmugglerList.begin(); it < m_SmugglerList.end(); it++)
+	{
+		if (RectIntersects(m_PlayerBBox, it->sellRect))
+		{
+			if (it->sellGoods != Nothing)
+			{
+				// Cigaretts
+				if (it->sellGoods == Cigaretts && m_Money >= 5)
+				{
+					m_Money -= 5;
+					m_Cigaretts += 1;
+					it->sellGoods = Nothing;
+					it->lastDesisiontime = SDL_GetTicks();
+
+					return true;
+				}
+				// Marihuana
+				if (it->sellGoods == Marihuana && m_Money >= 15)
+				{
+					m_Money -= 15;
+					m_Mariuhana += 1;
+					it->sellGoods = Nothing;
+					it->lastDesisiontime = SDL_GetTicks();
+
+					return true;
+				}
+				if (it->sellGoods == Cocaine && m_Money >= 50)
+				{
+					m_Money -= 50;
+					m_Cocaine += 1;
+					it->sellGoods = Nothing;
+					it->lastDesisiontime = SDL_GetTicks();
+
+					return true;
+				}
+				if (it->sellGoods == Vodka && m_Money >= 20)
+				{
+					m_Money -= 20;
+					m_Vodka += 1;
+					it->sellGoods = Nothing;
+					it->lastDesisiontime = SDL_GetTicks();
+
+					return true;
+				}
+				if (it->sellGoods == Wisky && m_Money >= 30)
+				{
+					m_Money -= 30;
+					m_Wisky += 1;
+					it->sellGoods = Nothing;
+					it->lastDesisiontime = SDL_GetTicks();
+
+					return true;
+				}
+			}
+		}	
+	}
+	return false;
+}
+
+bool Capp::Sell()
+{
+	std::vector<Prisoner>::iterator it;
+	for (it = m_PrisonerList.begin(); it < m_PrisonerList.end(); it++)
+	{
+		if (RectIntersects(m_PlayerBBox, it->BBrect))
+		{
+			// Cigaretts
+			if (it->BuyGoods == Cigaretts && m_Cigaretts >= 1)
+			{
+				m_Money += 10;
+				m_Cigaretts -= 1;
+				it->BuyGoods = Nothing;
+				it->lastDecisiontime = SDL_GetTicks();
+
+				return true;
+			}
+			// Marihuana
+			if (it->BuyGoods == Marihuana && m_Mariuhana >= 1)
+			{
+				m_Money += 20;
+				m_Mariuhana -= 1;
+				it->BuyGoods = Nothing;
+				it->lastDecisiontime = SDL_GetTicks();
+
+				return true;
+			}
+			// Cocaine
+			if (it->BuyGoods == Cocaine && m_Cocaine >= 1)
+			{
+				m_Money += 100;
+				m_Cocaine -= 1;
+				it->BuyGoods = Nothing;
+				it->lastDecisiontime = SDL_GetTicks();
+
+				return true;
+			}
+			// Vodka
+			if (it->BuyGoods == Vodka && m_Vodka >= 1)
+			{
+				m_Money += 40;
+				m_Vodka -= 1;
+				it->BuyGoods = Nothing;
+				it->lastDecisiontime = SDL_GetTicks();
+
+				return true;
+			}
+			// Wiskey
+			if (it->BuyGoods == Wisky && m_Wisky >= 1)
+			{
+				m_Money += 60;
+				m_Wisky -= 1;
+				it->BuyGoods = Nothing;
+				it->lastDecisiontime = SDL_GetTicks();
+
+				return true;
+			}
+		}
+	}
+	return false;
+}
 void Capp::UpdatePlayer(unsigned int elapsedTime)
 {
 	SDL_Rect temp = m_PlayerBBox;
@@ -105,7 +248,7 @@ void Capp::UpdatePlayer(unsigned int elapsedTime)
 			// Move Up
 			temp.y -= 1;
 
-			if (!RectIntersects(m_PrisonBB, temp, BBcolor))
+			if (!ColorIntersects(m_PrisonBB, temp, BBcolor))
 			{
 				m_PlayerBBox.y -= 1;
 				m_Playerrotation = 0.0f;
@@ -116,7 +259,7 @@ void Capp::UpdatePlayer(unsigned int elapsedTime)
 		{
 			// Move Down
 			temp.y += 1;
-			if (!RectIntersects(m_PrisonBB, temp, BBcolor))
+			if (!ColorIntersects(m_PrisonBB, temp, BBcolor))
 			{
 				m_PlayerBBox.y += 1;
 				m_Playerrotation = 180.0f;
@@ -127,7 +270,7 @@ void Capp::UpdatePlayer(unsigned int elapsedTime)
 		{
 			// Move Left
 			temp.x -= 1;
-			if (!RectIntersects(m_PrisonBB, temp, BBcolor))
+			if (!ColorIntersects(m_PrisonBB, temp, BBcolor))
 			{
 				m_PlayerBBox.x -= 1;
 				m_Playerrotation = 90.0f;
@@ -138,7 +281,7 @@ void Capp::UpdatePlayer(unsigned int elapsedTime)
 		{
 			// Move Right
 			temp.x += 1;
-			if (!RectIntersects(m_PrisonBB, temp, BBcolor))
+			if (!ColorIntersects(m_PrisonBB, temp, BBcolor))
 			{
 				m_PlayerBBox.x += 1;
 				m_Playerrotation = 270.0f;
@@ -150,11 +293,9 @@ void Capp::UpdatePlayer(unsigned int elapsedTime)
 			// player doesnt move
 			m_Playermoves = false;
 		}
-
-		m_lastTime = elapsedTime;
+		m_lastTime = elapsedTime;	
 	}
 	
-
 	// if Live´s <= 0 the game is lost
 	if (m_Live <= 0)
 		m_Gamestate = Lost;
@@ -162,23 +303,26 @@ void Capp::UpdatePlayer(unsigned int elapsedTime)
 
 void Capp::RenderPlayer(unsigned int elapsedTime)
 {
-	SDL_Rect PlayersrcRect = { 0, 0, 32, 32 };
 	if (m_Playermoves)
 	{
 		unsigned int time = elapsedTime - m_AnimationlastTime;
 
-		if (time >= 10)
+		if (time >= 500)
 		{
-			if (PlayersrcRect.x =! 32)
+			if (m_PlayersrcRect.x != 32)
 			{
-				PlayersrcRect.x = 32;
-			}		
+				m_PlayersrcRect.x = 32;
+			}
 			else
 			{
-				PlayersrcRect.x = 64;
+				m_PlayersrcRect.x = 64;
 			}
 			m_AnimationlastTime = elapsedTime;
 		}	
 	}
-	SDL_RenderCopyEx(m_Renderer, m_Player, &PlayersrcRect, &m_PlayerBBox, m_Playerrotation, NULL, SDL_FLIP_NONE);
+	else
+	{
+		m_PlayersrcRect.x = 0;
+	}
+	SDL_RenderCopyEx(m_Renderer, m_Player, &m_PlayersrcRect, &m_PlayerBBox, m_Playerrotation, NULL, SDL_FLIP_NONE);
 }
